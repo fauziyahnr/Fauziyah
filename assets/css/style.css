@@ -191,8 +191,8 @@ body {
 
 /* ==================== Footer ==================== */
 .footer {
-    background-color: var(--text-dark);
-    color: var(--bg-white);
+    background-color: var(--text-white);
+    color: var(--bg-dark);
     padding: 1rem 2rem;
     text-align: center;
     position: fixed; /* keep footer always visible */
