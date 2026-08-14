@@ -2,7 +2,7 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-if (hamburger) {
+if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
         navMenu.classList.toggle('active');
     });
@@ -10,85 +10,34 @@ if (hamburger) {
 
 // Close mobile menu when a link is clicked
 const navLinks = document.querySelectorAll('.nav-link');
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+if (navMenu && navLinks.length) {
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+        });
     });
-});
+}
 
 // ==================== Smooth Scrolling ====================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        // only handle real fragment links (ignore href="#" or empty)
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return; // target tidak ada: biarkan default
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
     });
-});
-
-// ==================== Contact Form Handling ====================
-const contactForm = document.getElementById('contactForm');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const inputs = contactForm.querySelectorAll('input, textarea');
-        const name = inputs[0].value;
-        const email = inputs[1].value;
-        const message = inputs[2].value;
-
-        // Basic validation
-        if (!name || !email || !message) {
-            alert('Please fill in all fields');
-            return;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
-            return;
-        }
-
-        // Show success message
-        console.log('Form Data:', { name, email, message });
-        alert('Thank you for your message! I will get back to you soon.');
-        contactForm.reset();
-    });
-}
-
-// ==================== Scroll Animation ====================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Animate project cards and skill items on scroll
-document.querySelectorAll('.project-card, .skill-category, .contact-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
 });
 
 // ==================== Active Navigation Link ====================
 const updateActiveLink = () => {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollPosition = window.scrollY + 100;
+    const sections = document.querySelectorAll('section[id], aside[id]');
+    const scrollPosition = window.scrollY + 120;
 
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -98,14 +47,12 @@ const updateActiveLink = () => {
 
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
             navLinks.forEach(link => link.style.color = '');
-            if (navLink) {
-                navLink.style.color = 'var(--primary-color)';
-            }
+            if (navLink) navLink.style.color = 'var(--primary-color)';
         }
     });
 };
-
 window.addEventListener('scroll', updateActiveLink);
+window.addEventListener('load', updateActiveLink);
 
 // ==================== Scroll to Top Button ====================
 const createScrollTopButton = () => {
@@ -129,7 +76,6 @@ const createScrollTopButton = () => {
         transition: all 0.3s ease;
         z-index: 999;
     `;
-
     document.body.appendChild(button);
 
     window.addEventListener('scroll', () => {
@@ -156,7 +102,6 @@ const createScrollTopButton = () => {
         button.style.transform = 'scale(1)';
     });
 };
-
 createScrollTopButton();
 
 // ==================== Console Message ====================
