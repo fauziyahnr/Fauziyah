@@ -212,7 +212,7 @@ body {
 }
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
-    color: var(--bg-white);
+    color: var(--bg-dark);
     font-size: 1.3rem;
     transition: var(--transition);
     text-decoration: none;
