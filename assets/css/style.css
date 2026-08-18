@@ -64,6 +64,7 @@ body {
     display: flex;
     list-style: none;
     gap: 1.25rem;
+    float: left;
 }
 .nav-link {
     color: var(--text-dark);
